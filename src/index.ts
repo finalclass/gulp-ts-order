@@ -36,7 +36,9 @@ function tsOrder():NodeJS.ReadWriteStream {
 
   function onEnd():void {
     res.sort().forEach((serv:string):void => {
-      this.emit('data', files[serv]);
+      if (files[serv]) {
+        this.emit('data', files[serv]);
+      }
     });
 
     return this.emit('end');

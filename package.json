@@ -1,9 +1,9 @@
 {
   "name": "gulp-ts-order",
   "version": "0.0.0",
-  "description": "",
+  "description": "Change the order of stream files based on ///<reference path=.../>",
   "keywords": [
-    "gulpplugin"
+    "gulpplugin", "typescript", "ts"
   ],
   "main": "build/index.js",
   "scripts": {
