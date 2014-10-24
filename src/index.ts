@@ -42,7 +42,6 @@ function tsOrder():NodeJS.ReadWriteStream {
     return this.emit('end');
   }
 
-
   return through(onFile, onEnd)
 }
 
