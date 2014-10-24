@@ -1,5 +1,7 @@
 /// <reference path="typings/tsd.d.ts"/>
 var through = require('through');
+var DependencyResolver = require('dependency-resolver');
+var path = require('path');
 function getFileReferences(contents) {
     var regex = 'reference path="(.+)"';
     var matches = contents.match(new RegExp(regex, 'g'));
@@ -11,12 +13,21 @@ function getFileReferences(contents) {
     });
 }
 function tsOrder() {
-    var files = [];
+    var res = new DependencyResolver();
+    var files = {};
     function onFile(file) {
-        console.log(getFileReferences(file.contents.toString()));
+        files[file.path] = file;
+        res.add(file.path);
+        getFileReferences(file.contents.toString()).forEach(function (p) {
+            var depPath = path.resolve(path.dirname(file.path), p);
+            res.setDependency(file.path, depPath);
+        });
     }
     function onEnd() {
-        // after file is processed emit "data" event
+        var _this = this;
+        res.sort().forEach(function (serv) {
+            _this.emit('data', files[serv]);
+        });
         return this.emit('end');
     }
     return through(onFile, onEnd);

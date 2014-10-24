@@ -20,6 +20,7 @@
     "gulp-util": "~3.0.1"
   },
   "dependencies": {
-    "through": "~2.3.6"
+    "through": "~2.3.6",
+    "dependency-resolver": "~1.0.2"
   }
 }

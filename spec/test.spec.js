@@ -3,7 +3,7 @@ var tsOrder = require('../build/index.js');
 var path = require('path');
 
 newFile = function(filepath, contents) {
-  var base = path.join(__dirname, 'fixtures');
+  var base = '/';
   return new File({
     path: path.join(base, filepath),
     base: base,
@@ -20,15 +20,17 @@ describe('gulp-ts-order', function () {
     var files = [];
     stream.on('data', files.push.bind(files));
     stream.on('end', function onEnd() {
-      //check the order of files
-      console.log('end', files);
+      expect(files[0].path).toBe('/1.ts');
+      expect(files[1].path).toBe('/2.ts');
+      expect(files[2].path).toBe('/3.ts');
+      expect(files[3].path).toBe('/4.ts');
       next();
     });
 
-    stream.write(newFile('file4.ts', '/// <reference path="file2.ts"/>\n/// <reference path="file1.ts"/>'));
-    stream.write(newFile('file3.ts', '/// <reference path="file2.ts"/>'));
-    stream.write(newFile('file2.ts', '/// <reference path="file1.ts"/>'));
-    stream.write(newFile('file1.ts', ''));
+    stream.write(newFile('4.ts', '/// <reference path="3.ts"/>\n/// <reference path="1.ts"/>'));
+    stream.write(newFile('3.ts', '/// <reference path="2.ts"/>'));
+    stream.write(newFile('2.ts', '/// <reference path="1.ts"/>'));
+    stream.write(newFile('1.ts', ''));
 
     return stream.end();
   });

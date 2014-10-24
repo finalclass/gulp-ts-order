@@ -23,7 +23,7 @@ gulp.task('ts-compile', function () {
       module: 'commonjs',
       target: 'ES5',
       out: null,
-      outDir: null,
+      outDir: 'src/',
       mapRoot: null,
       sourceRoot: null,
       allowbool: false,
